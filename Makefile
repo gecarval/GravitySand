@@ -15,6 +15,8 @@ SRC =	./includes/imgui/imgui_demo.cpp		\
 		./includes/imgui/imgui.cpp			\
 		./includes/imgui/imgui_draw.cpp		\
 		./includes/imgui/imgui_widgets.cpp	\
+		./classes/Particle.cpp				\
+		./classes/Gravity.cpp				\
 		./srcs/input.cpp					\
 		./srcs/menu.cpp						\
 		./srcs/main.cpp
@@ -30,19 +32,21 @@ INCS = -I./classes/							\
 	   ./includes/raylib/libraylib.a -lGL -lm -lpthread -ldl -lrt -lX11
 
 INCLUDES = ./includes/Game.hpp											\
-		   ./includes/imgui/imgui.h							\
-		   ./includes/imgui/rlImGui.h							\
-		   ./includes/imgui/imconfig.h							\
-		   ./includes/imgui/rlImGuiColors.h					\
-		   ./includes/imgui/imgui_internal.h					\
-		   ./includes/imgui/imstb_rectpack.h					\
-		   ./includes/imgui/imstb_textedit.h					\
-		   ./includes/imgui/imstb_truetype.h					\
-		   ./includes/imgui/imgui_impl_raylib.h				\
-		   ./includes/imgui/extras/IconsFontAwesome6.h			\
-		   ./includes/imgui/extras/FA6FreeSolidFontData.h		\
+		   ./includes/imgui/imgui.h										\
+		   ./includes/imgui/rlImGui.h									\
+		   ./includes/imgui/imconfig.h									\
+		   ./includes/imgui/rlImGuiColors.h								\
+		   ./includes/imgui/imgui_internal.h							\
+		   ./includes/imgui/imstb_rectpack.h							\
+		   ./includes/imgui/imstb_textedit.h							\
+		   ./includes/imgui/imstb_truetype.h							\
+		   ./includes/imgui/imgui_impl_raylib.h							\
+		   ./includes/imgui/extras/IconsFontAwesome6.h					\
+		   ./includes/imgui/extras/FA6FreeSolidFontData.h				\
 		   ./includes/raylib/rlgl.h										\
 		   ./includes/raylib/raylib.h									\
+		   ./classes/Particle.hpp										\
+		   ./classes/Gravity.hpp										\
 		   ./includes/raylib/raymath.h
 
 OBJS = $(SRC:.cpp=.o)
