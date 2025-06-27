@@ -2,6 +2,44 @@
 #define PARTICLE_HPP
 #include "../includes/raylib/raylib.h"
 #include "../includes/raylib/raymath.h"
+#include <cmath>
+
+class Particle {
+  private:
+	int		 type;
+	Color	 color;
+	Vector2	 pos;
+	Vector2	 vel;
+	Vector2	 acel;
+	double_t mass;
+	double_t density;
+	double_t fluidity;
+	double_t temperature;
+
+  public:
+	Particle(const int &type);
+	Particle(const int &type, const Vector2 &pos);
+	Particle &operator=(const Particle &other);
+	~Particle();
+	const int	   &getType(void) const;
+	void			setType(const int &data);
+	const Color	   &getColor(void) const;
+	void			setColor(const Color &data);
+	const Vector2  &getPos(void) const;
+	void			setPos(const Vector2 &data);
+	const Vector2  &getVel(void) const;
+	void			setVel(const Vector2 &data);
+	const Vector2  &getAcel(void) const;
+	void			setAcel(const Vector2 &data);
+	const double_t &getMass(void) const;
+	void			setMass(const double_t &data);
+	const double_t &getDensity(void) const;
+	void			setDensity(const double_t &data);
+	const double_t &getFluidity(void) const;
+	void			setFluidity(const double_t &data);
+	const double_t &getTemperature(void) const;
+	void			setTemperature(const double_t &data);
+};
 
 enum ParticleType {
 	Sand = 0,
@@ -9,28 +47,28 @@ enum ParticleType {
 	Lava,
 };
 
-static const Color PART_COLORS[] = {
-	[Sand] = (Color){0xC2, 0xB2, 0x80, 0xFF},  // Sand
-	[Water] = (Color){0xD4, 0xF1, 0xF9, 0xFF}, // Water
-	[Lava] = (Color){0xFF, 0x25, 0x00, 0xFF},  // Lava
+static const double_t PART_MASS[] = {
+	[Sand] = 1.2,
+	[Water] = 0.8,
+	[Lava] = 2.0,
 };
 
-class Particle {
-  public:
-	Particle(const int &type);
-	Particle(const int &type, const Vector2 &pos);
-	Particle &operator=(const Particle &other);
-	~Particle();
+static const double_t PART_DENSE[] = {
+	[Sand] = 1.0,
+	[Water] = 0.8,
+	[Lava] = 0.9,
+};
 
-  private:
-	int		 type;
-	Color	 color;
-	Vector2	 pos;
-	Vector2	 vel;
-	Vector2	 acel;
-	double_t density;
-	double_t temperature;
-	double_t viscocity;
+static const double_t PART_FLUID[] = {
+	[Sand] = 0.0,
+	[Water] = 2.0,
+	[Lava] = 0.5,
+};
+
+static const Color PART_COLORS[] = {
+	[Sand] = (Color){0xC2, 0xB2, 0x80, 0xFF},
+	[Water] = (Color){0xD4, 0xF1, 0xF9, 0xFF},
+	[Lava] = (Color){0xFF, 0x25, 0x00, 0xFF},
 };
 
 #endif
