@@ -15,6 +15,7 @@ class Particle {
 	double_t density;
 	double_t fluidity;
 	double_t temperature;
+	long	 lifetime;
 
   public:
 	Particle(const int &type);
@@ -48,27 +49,27 @@ enum ParticleType {
 };
 
 static const double_t PART_MASS[] = {
-	[Sand] = 1.2,
+	[Sand]	= 1.2,
 	[Water] = 0.8,
-	[Lava] = 2.0,
+	[Lava]	= 2.0,
 };
 
 static const double_t PART_DENSE[] = {
-	[Sand] = 1.0,
+	[Sand]	= 1.0,
 	[Water] = 0.8,
-	[Lava] = 0.9,
+	[Lava]	= 0.9,
 };
 
 static const double_t PART_FLUID[] = {
-	[Sand] = 0.0,
+	[Sand]	= 0.0,
 	[Water] = 2.0,
-	[Lava] = 0.5,
+	[Lava]	= 0.5,
 };
 
 static const Color PART_COLORS[] = {
-	[Sand] = (Color){0xC2, 0xB2, 0x80, 0xFF},
+	[Sand]	= (Color){0xC2, 0xB2, 0x80, 0xFF},
 	[Water] = (Color){0xD4, 0xF1, 0xF9, 0xFF},
-	[Lava] = (Color){0xFF, 0x25, 0x00, 0xFF},
+	[Lava]	= (Color){0xFF, 0x25, 0x00, 0xFF},
 };
 
 #endif

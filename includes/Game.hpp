@@ -2,7 +2,7 @@
 #define GAME_HPP
 
 // MACROS
-static const int WINDOW_WIDTH = 1600;
+static const int WINDOW_WIDTH  = 1600;
 static const int WINDOW_HEIGHT = 900;
 
 // INCLUDES
