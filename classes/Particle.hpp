@@ -15,9 +15,10 @@ class Particle {
 	double_t density;
 	double_t fluidity;
 	double_t temperature;
-	long	 lifetime;
+	double_t tempConductivity;
 
   public:
+	Particle();
 	Particle(const int &type);
 	Particle(const int &type, const Vector2 &pos);
 	Particle &operator=(const Particle &other);
@@ -40,36 +41,50 @@ class Particle {
 	void			setFluidity(const double_t &data);
 	const double_t &getTemperature(void) const;
 	void			setTemperature(const double_t &data);
+	const double_t &getTempConductivity(void) const;
+	void			setTempConductivity(const double_t &data);
 };
 
 enum ParticleType {
-	Sand = 0,
-	Water,
-	Lava,
+	SAND_PT = 0,
+	WATER_PT,
+	LAVA_PT,
 };
 
 static const double_t PART_MASS[] = {
-	[Sand]	= 1.2,
-	[Water] = 0.8,
-	[Lava]	= 2.0,
+	[SAND_PT] = 1.2,
+	[WATER_PT] = 0.8,
+	[LAVA_PT] = 2.0,
 };
 
 static const double_t PART_DENSE[] = {
-	[Sand]	= 1.0,
-	[Water] = 0.8,
-	[Lava]	= 0.9,
+	[SAND_PT] = 1.0,
+	[WATER_PT] = 0.8,
+	[LAVA_PT] = 0.9,
 };
 
 static const double_t PART_FLUID[] = {
-	[Sand]	= 0.0,
-	[Water] = 2.0,
-	[Lava]	= 0.5,
+	[SAND_PT] = 0.0,
+	[WATER_PT] = 2.0,
+	[LAVA_PT] = 0.5,
 };
 
 static const Color PART_COLORS[] = {
-	[Sand]	= (Color){0xC2, 0xB2, 0x80, 0xFF},
-	[Water] = (Color){0xD4, 0xF1, 0xF9, 0xFF},
-	[Lava]	= (Color){0xFF, 0x25, 0x00, 0xFF},
+	[SAND_PT] = (Color){0xC2, 0xB2, 0x80, 0xFF},
+	[WATER_PT] = (Color){0xD4, 0xF1, 0xF9, 0xFF},
+	[LAVA_PT] = (Color){0xFF, 0x25, 0x00, 0xFF},
+};
+
+static const double_t PART_COND[] = {
+	[SAND_PT] = 0.0,
+	[WATER_PT] = 0.5,
+	[LAVA_PT] = 1.0,
+};
+
+static const double_t PART_TEMP[] = {
+	[SAND_PT] = 0.0,
+	[WATER_PT] = 20.0,
+	[LAVA_PT] = 1000.0,
 };
 
 #endif

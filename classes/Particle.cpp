@@ -1,25 +1,34 @@
 #include "Particle.hpp"
 
+Particle::Particle()
+	: type(SAND_PT), color(PART_COLORS[SAND_PT]), pos(Vector2()),
+	  vel(Vector2()), acel(Vector2()), mass(PART_MASS[SAND_PT]),
+	  density(PART_DENSE[SAND_PT]), fluidity(PART_FLUID[SAND_PT]),
+	  temperature(PART_TEMP[SAND_PT]), tempConductivity(PART_COND[SAND_PT]) {
+}
+
 Particle::Particle(const int &new_type)
 	: type(new_type), color(PART_COLORS[new_type]), pos(Vector2()),
 	  vel(Vector2()), acel(Vector2()), mass(PART_MASS[new_type]),
 	  density(PART_DENSE[new_type]), fluidity(PART_FLUID[new_type]),
-	  temperature(0.0) {
+	  temperature(PART_TEMP[new_type]), tempConductivity(PART_COND[new_type]) {
 }
 
 Particle::Particle(const int &new_type, const Vector2 &new_pos)
 	: type(new_type), color(PART_COLORS[new_type]), pos(new_pos),
 	  vel(Vector2()), acel(Vector2()), mass(PART_MASS[new_type]),
 	  density(PART_DENSE[new_type]), fluidity(PART_FLUID[new_type]),
-	  temperature(0.0) {
+	  temperature(PART_TEMP[new_type]), tempConductivity(PART_COND[new_type]) {
 }
 
 Particle &Particle::operator=(const Particle &other) {
 	if (this != &other) {
 		this->setType(other.getType());
+		this->setMass(other.getMass());
 		this->setColor(other.getColor());
 		this->setDensity(other.getDensity());
 		this->setFluidity(other.getFluidity());
+		this->setTempConductivity(other.getTempConductivity());
 	}
 	return (*this);
 }
@@ -97,4 +106,12 @@ const double_t &Particle::getTemperature(void) const {
 
 void Particle::setTemperature(const double_t &data) {
 	this->temperature = data;
+}
+
+const double_t &Particle::getTempConductivity(void) const {
+	return (this->tempConductivity);
+}
+
+void Particle::setTempConductivity(const double_t &data) {
+	this->tempConductivity = data;
 }
