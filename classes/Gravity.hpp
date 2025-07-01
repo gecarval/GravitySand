@@ -8,6 +8,8 @@ class Gravity {
   public:
 	Gravity();
 	~Gravity();
+	void					   update(void);
+	void					   render(void);
 	void					   attract(void);
 	const std::list<Particle> &getParticles(void);
 	void					   setParticles(const std::list<Particle> &other);

@@ -36,6 +36,12 @@ Particle &Particle::operator=(const Particle &other) {
 Particle::~Particle() {
 }
 
+void Particle::update(void) {
+	this->vel += this->acel * GetFrameTime();
+	this->pos += this->vel * GetFrameTime();
+	this->acel = Vector2();
+}
+
 const int &Particle::getType(void) const {
 	return (this->type);
 }

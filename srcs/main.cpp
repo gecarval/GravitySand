@@ -1,7 +1,8 @@
 #include "../includes/Game.hpp"
 
-Particle *particles;
-Gravity	  gravity;
+Particle	*particles;
+Gravity		gravity;
+Camera2D	camera = {(Vector2){0, 0}, (Vector2){0, 0}, 0.0f, 1.0f};
 
 void initParticles(void) {
 	int		randYPos;
@@ -26,22 +27,19 @@ void initEngine(void) {
 }
 
 void renderGame(void) {
-	for (const auto &particle : gravity.getParticles()) {
-		DrawRectangleV(particle.getPos(),
-					   (Vector2){PARTICLE_SIZE, PARTICLE_SIZE},
-					   particle.getColor());
-	}
+	gravity.render();
 }
 
 void updateEngine(void) {
 	while (!WindowShouldClose()) {
 		engineInput();
 		gravity.attract();
+		gravity.update();
 		BeginDrawing();
-		// BeginMode2D((Camera){});
 		ClearBackground({0, 0, 24, 255});
+		BeginMode2D(camera);
 		renderGame();
-		// EndMode2D();
+		EndMode2D();
 		DrawFPS(10, 10);
 		renderImGui();
 		EndDrawing();

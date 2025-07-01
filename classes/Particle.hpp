@@ -4,6 +4,8 @@
 #include "../includes/raylib/raymath.h"
 #include <cmath>
 
+static const int PARTICLE_SIZE = 4;
+
 class Particle {
   private:
 	int		 type;
@@ -23,6 +25,7 @@ class Particle {
 	Particle(const int &type, const Vector2 &pos);
 	Particle &operator=(const Particle &other);
 	~Particle();
+	void			update(void);
 	const int	   &getType(void) const;
 	void			setType(const int &data);
 	const Color	   &getColor(void) const;

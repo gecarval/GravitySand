@@ -27,6 +27,18 @@ void Gravity::attract() {
 	}
 }
 
+void Gravity::update() {
+	for (auto &p : this->particle) {
+		p.update();
+	}
+}
+
+void Gravity::render() {
+	for (const auto &p : this->particle) {
+		DrawRectangleV(p.getPos(), (Vector2){PARTICLE_SIZE, PARTICLE_SIZE}, p.getColor());
+	}
+}
+
 const std::list<Particle> &Gravity::getParticles() {
 	return (this->particle);
 }
