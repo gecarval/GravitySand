@@ -2,13 +2,12 @@
 #include <deque>
 
 void initParticles(Game &game) {
-	const int part_max_amount = 100;
-	int		  randYPos;
-	int		  randXPos;
-	Vector2	  pos;
+	int		randYPos;
+	int		randXPos;
+	Vector2 pos;
 
-	game.particles = std::deque<Particle>(part_max_amount);
-	for (int i = 0; i < part_max_amount; i++) {
+	game.particles = std::deque<Particle>(PART_MAX_AMOUNT);
+	for (int i = 0; i < PART_MAX_AMOUNT; i++) {
 		randYPos = rand() % WINDOW_HEIGHT;
 		randXPos = rand() % WINDOW_WIDTH;
 		pos = (Vector2){static_cast<float>(randXPos),
