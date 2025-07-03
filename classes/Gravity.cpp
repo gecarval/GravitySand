@@ -1,7 +1,11 @@
 #include "Gravity.hpp"
-#include <list>
+#include <deque>
 
-Gravity::Gravity() {
+Gravity::Gravity(std::deque<Particle> &p) : particle(p), gravity(1.0) {
+}
+
+Gravity::Gravity(std::deque<Particle> &p, const double_t &G)
+	: particle(p), gravity(G) {
 }
 
 Gravity::~Gravity() {
@@ -17,6 +21,7 @@ void Gravity::attract() {
 					direction = Vector2Normalize(direction);
 					double_t force =
 						(p1.getMass() * p2.getMass()) / (distance * distance);
+					force *= this->gravity;
 					Vector2 acceleration = direction * force / p1.getMass();
 					p1.setAcel(p1.getAcel() + acceleration);
 					acceleration = direction * force / p2.getMass();
@@ -35,14 +40,22 @@ void Gravity::update() {
 
 void Gravity::render() {
 	for (const auto &p : this->particle) {
-		DrawRectangleV(p.getPos(), (Vector2){PARTICLE_SIZE, PARTICLE_SIZE}, p.getColor());
+		p.render();
 	}
 }
 
-const std::list<Particle> &Gravity::getParticles() {
+const std::deque<Particle> &Gravity::getParticles() const {
 	return (this->particle);
 }
 
-void Gravity::setParticles(const std::list<Particle> &other) {
+void Gravity::setParticles(std::deque<Particle> &other) {
 	this->particle = other;
+}
+
+const double_t &Gravity::getGravity() const {
+	return (this->gravity);
+}
+
+void Gravity::setGravity(const double_t &other) {
+	this->gravity = other;
 }

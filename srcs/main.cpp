@@ -1,44 +1,48 @@
 #include "../includes/Game.hpp"
+#include <deque>
 
-Particle	*particles;
-Gravity		gravity;
-Camera2D	camera = {(Vector2){0, 0}, (Vector2){0, 0}, 0.0f, 1.0f};
+void initParticles(Game &game) {
+	const int part_max_amount = 100;
+	int		  randYPos;
+	int		  randXPos;
+	Vector2	  pos;
 
-void initParticles(void) {
-	int		randYPos;
-	int		randXPos;
-	Vector2 pos;
-
-	particles = new Particle[1000];
-	for (int i = 0; i < 1000; i++) {
+	game.particles = std::deque<Particle>(part_max_amount);
+	for (int i = 0; i < part_max_amount; i++) {
 		randYPos = rand() % WINDOW_HEIGHT;
 		randXPos = rand() % WINDOW_WIDTH;
-		pos = {static_cast<float>(randXPos), static_cast<float>(randYPos)};
-		particles[i] = Particle(rand() % 3, pos);
+		pos = (Vector2){static_cast<float>(randXPos),
+						static_cast<float>(randYPos)};
+		game.particles[i].setNewType(rand() % 3);
+		game.particles[i].setPos(pos);
 	}
-	gravity.setParticles(std::list<Particle>(particles, particles + 1000));
+	game.gravity.setParticles(game.particles);
+	game.gravity.setGravity(3000.0);
 }
 
-void initEngine(void) {
+void initEngine(Game &game) {
 	InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Gravity Sand");
 	SetTargetFPS(60);
 	rlImGuiSetup(true);
-	initParticles();
+	initParticles(game);
+	game.camera = (Camera2D){
+		(Vector2){WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f},
+		(Vector2){WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f}, 0.0f, 1.0f};
 }
 
-void renderGame(void) {
-	gravity.render();
+void renderGame(Game &game) {
+	game.gravity.render();
 }
 
-void updateEngine(void) {
+void updateEngine(Game &game) {
 	while (!WindowShouldClose()) {
-		engineInput();
-		gravity.attract();
-		gravity.update();
+		engineInput(game);
+		game.gravity.attract();
+		game.gravity.update();
 		BeginDrawing();
 		ClearBackground({0, 0, 24, 255});
-		BeginMode2D(camera);
-		renderGame();
+		BeginMode2D(game.camera);
+		renderGame(game);
 		EndMode2D();
 		DrawFPS(10, 10);
 		renderImGui();
@@ -46,14 +50,16 @@ void updateEngine(void) {
 	}
 }
 
-void endEngine(void) {
+void endEngine() {
 	rlImGuiShutdown();
 	CloseWindow();
 }
 
 int main(void) {
-	initEngine();
-	updateEngine();
+	std::deque<Particle> p;
+	Game				 game(p);
+	initEngine(game);
+	updateEngine(game);
 	endEngine();
 	return (0);
 }

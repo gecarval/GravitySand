@@ -2,20 +2,24 @@
 #define GRAVITY_HPP
 
 #include "../classes/Particle.hpp"
-#include <list>
+#include <deque>
 
 class Gravity {
   public:
-	Gravity();
+	Gravity(std::deque<Particle> &p);
+	Gravity(std::deque<Particle> &p, const double_t &G);
 	~Gravity();
-	void					   update(void);
-	void					   render(void);
-	void					   attract(void);
-	const std::list<Particle> &getParticles(void);
-	void					   setParticles(const std::list<Particle> &other);
+	void						update(void);
+	void						render(void);
+	void						attract(void);
+	const std::deque<Particle> &getParticles(void) const;
+	void						setParticles(std::deque<Particle> &other);
+	const double_t			   &getGravity(void) const;
+	void						setGravity(const double_t &other);
 
   private:
-	std::list<Particle> particle;
+	std::deque<Particle> &particle;
+	double_t			  gravity;
 };
 
 #endif
