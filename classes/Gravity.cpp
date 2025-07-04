@@ -12,35 +12,26 @@ Gravity::~Gravity() {
 }
 
 void Gravity::attract() {
-	for (auto &p1 : this->particle) {
-		for (auto &p2 : this->particle) {
-			if (&p1 != &p2) {
-				Vector2	 direction = p2.getPos() - p1.getPos();
-				double_t distance = Vector2Length(direction);
-				if (distance > 0) {
-					direction = Vector2Normalize(direction);
-					double_t force =
-						(p1.getMass() * p2.getMass()) / (distance * distance);
-					force *= this->gravity;
-					Vector2 acceleration = direction * force / p1.getMass();
-					p1.setAcel(p1.getAcel() + acceleration);
-					acceleration = direction * force / p2.getMass();
-					p2.setAcel(p2.getAcel() - acceleration);
-				}
-			}
+	for (std::deque<Particle>::iterator p1 = this->particle.begin();
+		 p1 != this->particle.cend(); p1++) {
+		for (std::deque<Particle>::iterator p2 = p1;
+			 p2 != this->particle.cend(); p2++) {
+			(*p1).attract(*p2, this->gravity);
 		}
 	}
 }
 
 void Gravity::update() {
-	for (auto &p : this->particle) {
-		p.update();
+	for (std::deque<Particle>::iterator p = this->particle.begin();
+		 p != this->particle.cend(); p++) {
+		(*p).update();
 	}
 }
 
 void Gravity::render() {
-	for (const auto &p : this->particle) {
-		p.render();
+	for (std::deque<Particle>::iterator p = this->particle.begin();
+		 p != this->particle.cend(); p++) {
+		(*p).render();
 	}
 }
 

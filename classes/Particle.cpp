@@ -54,6 +54,23 @@ void Particle::render(void) const {
 	DrawRectangleRec(this->size, this->color);
 }
 
+void Particle::attract(Particle &other, const double_t &G) {
+	if (this != &other) {
+		Vector2	 direction = other.getPos() - this->getPos();
+		double_t distance = Vector2Length(direction);
+		if (distance > 1) {
+			direction = Vector2Normalize(direction);
+			double_t force =
+				(this->getMass() * other.getMass()) / (distance * distance);
+			force *= G;
+			Vector2 acceleration = direction * force / this->getMass();
+			this->setAcel(this->getAcel() + acceleration);
+			acceleration = direction * force / other.getMass();
+			other.setAcel(other.getAcel() - acceleration);
+		}
+	}
+}
+
 void Particle::intersect(const Particle &other) const {
 	GetCollisionRec(this->size, other.getSize());
 }

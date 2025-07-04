@@ -29,6 +29,7 @@ class Particle {
 	void			 update(void);
 	void			 render(void) const;
 	void			 intersect(const Particle &other) const;
+	void			 attract(Particle &other, const double_t &G);
 	const Rectangle &getSize(void) const;
 	void			 setSize(const Rectangle &data);
 	const int		&getType(void) const;
