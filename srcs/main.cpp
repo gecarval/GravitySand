@@ -21,7 +21,7 @@ void initParticles(Game &game) {
 
 void initEngine(Game &game) {
 	InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Gravity Sand");
-	SetTargetFPS(60);
+	//	SetTargetFPS(60);
 	rlImGuiSetup(true);
 	initParticles(game);
 	game.camera = (Camera2D){

@@ -11,7 +11,7 @@ static const int WINDOW_HEIGHT = 900;
 #include "imgui/rlImGui.h"
 #include <iostream>
 
-static const int PART_MAX_AMOUNT = 100;
+static const int PART_MAX_AMOUNT = 500;
 
 class Game {
   public:
