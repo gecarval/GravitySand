@@ -2,6 +2,7 @@
 #define GRAVITY_HPP
 
 #include "../classes/Particle.hpp"
+#include "../classes/QuadTree.hpp"
 #include <deque>
 
 class Gravity {
