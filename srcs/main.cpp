@@ -7,15 +7,15 @@ void initParticles(Game &game) {
 	Vector2 pos;
 
 	game.particles = std::deque<Particle>(PART_MAX_AMOUNT);
-	for (int i = 0; i < PART_MAX_AMOUNT; i++) {
+	for (std::deque<Particle>::iterator p = game.particles.begin();
+		 p != game.particles.end(); p++) {
 		randYPos = rand() % WINDOW_HEIGHT;
 		randXPos = rand() % WINDOW_WIDTH;
 		pos		 = (Vector2){static_cast<float>(randXPos),
 							 static_cast<float>(randYPos)};
-		game.particles[i].setNewType(rand() % 3);
-		game.particles[i].setPos(pos);
+		(*p).setNewType(rand() % 3);
+		(*p).setPos(pos);
 	}
-	game.gravity.setParticles(game.particles);
 	game.gravity.setGravity(3000.0);
 }
 
@@ -34,8 +34,10 @@ void renderGame(Game &game) {
 		 p != game.particles.cend(); p++) {
 		if (CheckCollisionRecs(
 				(*p).getSize(),
-				(Rectangle){game.camera.target.x - game.camera.offset.x,
-							game.camera.target.y - game.camera.offset.y,
+				(Rectangle){game.camera.target.x -
+								game.camera.offset.x / game.camera.zoom,
+							game.camera.target.y -
+								game.camera.offset.y / game.camera.zoom,
 							WINDOW_WIDTH / game.camera.zoom,
 							WINDOW_HEIGHT / game.camera.zoom}))
 			(*p).render();
