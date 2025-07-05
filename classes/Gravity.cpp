@@ -12,6 +12,7 @@ Gravity::~Gravity() {
 }
 
 void Gravity::attract() {
+	if (this->gravity == 0.0) return;
 	for (std::deque<Particle>::iterator p1 = this->particle.begin();
 		 p1 != this->particle.cend(); p1++) {
 		for (std::deque<Particle>::iterator p2 = p1;
@@ -28,11 +29,7 @@ void Gravity::update() {
 	}
 }
 
-void Gravity::render() {
-	for (std::deque<Particle>::iterator p = this->particle.begin();
-		 p != this->particle.cend(); p++) {
-		(*p).render();
-	}
+void Gravity::render(void) {
 }
 
 const std::deque<Particle> &Gravity::getParticles() const {

@@ -2,8 +2,8 @@
 #define GAME_HPP
 
 // MACROS
-static const int WINDOW_WIDTH = 1600;
-static const int WINDOW_HEIGHT = 900;
+static const int WINDOW_WIDTH  = 800;
+static const int WINDOW_HEIGHT = 600;
 
 // INCLUDES
 #include "../classes/Gravity.hpp"
@@ -22,7 +22,7 @@ class Game {
 	~Game() {};
 };
 
-void renderImGui(void);
+void renderImGui(Game &game);
 void engineInput(Game &game);
 
 #endif

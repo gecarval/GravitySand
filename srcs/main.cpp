@@ -10,8 +10,8 @@ void initParticles(Game &game) {
 	for (int i = 0; i < PART_MAX_AMOUNT; i++) {
 		randYPos = rand() % WINDOW_HEIGHT;
 		randXPos = rand() % WINDOW_WIDTH;
-		pos = (Vector2){static_cast<float>(randXPos),
-						static_cast<float>(randYPos)};
+		pos		 = (Vector2){static_cast<float>(randXPos),
+							 static_cast<float>(randYPos)};
 		game.particles[i].setNewType(rand() % 3);
 		game.particles[i].setPos(pos);
 	}
@@ -30,7 +30,16 @@ void initEngine(Game &game) {
 }
 
 void renderGame(Game &game) {
-	game.gravity.render();
+	for (std::deque<Particle>::iterator p = game.particles.begin();
+		 p != game.particles.cend(); p++) {
+		if (CheckCollisionRecs(
+				(*p).getSize(),
+				(Rectangle){game.camera.target.x - game.camera.offset.x,
+							game.camera.target.y - game.camera.offset.y,
+							WINDOW_WIDTH / game.camera.zoom,
+							WINDOW_HEIGHT / game.camera.zoom}))
+			(*p).render();
+	}
 }
 
 void updateEngine(Game &game) {
@@ -44,7 +53,7 @@ void updateEngine(Game &game) {
 		renderGame(game);
 		EndMode2D();
 		DrawFPS(10, 10);
-		renderImGui();
+		renderImGui(game);
 		EndDrawing();
 	}
 }

@@ -2,7 +2,7 @@
 
 void engineInput(Game &game) {
 	const float		   WALKSPEED = (0.8f * GetFrameTime()) / (game.camera.zoom);
-	static const float MIN_ZOOM = 0.1f / ((float)WINDOW_WIDTH / 5000.0f);
+	static const float MIN_ZOOM	 = 0.1f / ((float)WINDOW_WIDTH / 5000.0f);
 
 	if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
 		std::cout << "Right Mouse was Clicked" << std::endl;
