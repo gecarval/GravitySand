@@ -1,5 +1,5 @@
-#ifndef GRAVITY_HPP
-#define GRAVITY_HPP
+#ifndef QUADTREE_HPP
+#define QUADTREE_HPP
 
 #include "../classes/Particle.hpp"
 #include <cstdint>
@@ -11,6 +11,8 @@ class QuadTree {
 	Particle *p[MAX_CAPACITY];
 	Rectangle quad;
 	double_t  tmass;
+	Vector2	  min;
+	Vector2	  max;
 	uint8_t	  qPos;
 	size_t	  count;
 	size_t	  level;
@@ -25,7 +27,12 @@ class QuadTree {
   public:
 	QuadTree();
 	~QuadTree();
-	void insert(const Particle &p);
+	void		   clear(void);
+	void		   insert(const Particle &p);
+	void		   setMin(const Vector2 &v);
+	const Vector2 &getMin(void) const;
+	void		   setMax(const Vector2 &v);
+	const Vector2 &getMax(void) const;
 };
 
 #endif

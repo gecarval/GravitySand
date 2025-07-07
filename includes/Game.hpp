@@ -11,15 +11,17 @@ static const int WINDOW_HEIGHT = 900;
 #include "./imgui/imgui.h"
 #include "imgui/rlImGui.h"
 #include <iostream>
+#include <string>
 
 static const int PART_MAX_AMOUNT = 500;
 
 class Game {
   public:
-	std::deque<Particle> particles;
-	Gravity				 gravity;
 	Camera2D			 camera;
 	RenderTexture2D		 screen;
+	std::deque<Particle> particles;
+	QuadTree			 quadTree;
+	Gravity				 gravity;
 	Game() {};
 	~Game() {};
 };

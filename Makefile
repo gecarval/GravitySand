@@ -16,6 +16,7 @@ SRC =	./includes/imgui/imgui_demo.cpp		\
 		./includes/imgui/imgui_draw.cpp		\
 		./includes/imgui/imgui_widgets.cpp	\
 		./classes/Particle.cpp				\
+		./classes/QuadTree.cpp				\
 		./classes/Gravity.cpp				\
 		./srcs/input.cpp					\
 		./srcs/menu.cpp						\
@@ -34,6 +35,7 @@ INCS = -I./classes/							\
 INCLUDES = ./includes/Game.hpp		\
 		   ./classes/Particle.hpp	\
 		   ./classes/Gravity.hpp	\
+		   ./classes/QuadTree.hpp
 
 OBJS = $(SRC:.cpp=.o)
 RM = rm -f

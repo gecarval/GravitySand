@@ -36,6 +36,8 @@ void renderGame(Game &game) {
 	for (std::deque<Particle>::iterator p = game.particles.begin();
 		 p != game.particles.cend(); p++) {
 		(*p).renderAt(game.camera);
+		game.quadTree.setMin((*p).getPos());
+		game.quadTree.setMax((*p).getPos());
 	}
 	EndTextureMode();
 }
