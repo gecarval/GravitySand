@@ -2,8 +2,8 @@
 #define GAME_HPP
 
 // MACROS
-static const int WINDOW_WIDTH  = 800;
-static const int WINDOW_HEIGHT = 600;
+static const int WINDOW_WIDTH = 1600;
+static const int WINDOW_HEIGHT = 900;
 
 // INCLUDES
 #include "../classes/Gravity.hpp"
@@ -18,7 +18,7 @@ class Game {
 	std::deque<Particle> particles;
 	Gravity				 gravity;
 	Camera2D			 camera;
-	Game(std::deque<Particle> &p) : particles(p), gravity(Gravity(p)) {};
+	Game() {};
 	~Game() {};
 };
 

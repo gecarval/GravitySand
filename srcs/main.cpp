@@ -11,8 +11,8 @@ void initParticles(Game &game) {
 		 p != game.particles.end(); p++) {
 		randYPos = rand() % WINDOW_HEIGHT;
 		randXPos = rand() % WINDOW_WIDTH;
-		pos		 = (Vector2){static_cast<float>(randXPos),
-							 static_cast<float>(randYPos)};
+		pos = (Vector2){static_cast<float>(randXPos),
+						static_cast<float>(randYPos)};
 		(*p).setNewType(rand() % 3);
 		(*p).setPos(pos);
 	}
@@ -47,8 +47,8 @@ void renderGame(Game &game) {
 void updateEngine(Game &game) {
 	while (!WindowShouldClose()) {
 		engineInput(game);
-		game.gravity.attract();
-		game.gravity.update();
+		game.gravity.attract(game.particles);
+		game.gravity.update(game.particles);
 		BeginDrawing();
 		ClearBackground({0, 0, 24, 255});
 		BeginMode2D(game.camera);
@@ -66,8 +66,7 @@ void endEngine() {
 }
 
 int main(void) {
-	std::deque<Particle> p;
-	Game				 game(p);
+	Game game;
 	initEngine(game);
 	updateEngine(game);
 	endEngine();
