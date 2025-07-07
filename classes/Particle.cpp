@@ -29,12 +29,12 @@ Particle::Particle(const int &new_type, const Vector2 &new_pos)
 
 Particle &Particle::operator=(const Particle &other) {
 	if (this != &other) {
-		this->setType(other.getType());
-		this->setMass(other.getMass());
-		this->setColor(other.getColor());
-		this->setDensity(other.getDensity());
-		this->setFluidity(other.getFluidity());
-		this->setTempConductivity(other.getTempConductivity());
+		this->type = other.type;
+		this->mass = other.mass;
+		this->color = other.color;
+		this->density = other.density;
+		this->fluidity = other.fluidity;
+		this->tempConductivity = other.tempConductivity;
 	}
 	return (*this);
 }
@@ -52,6 +52,14 @@ void Particle::update(void) {
 
 void Particle::render(void) const {
 	DrawRectangleRec(this->size, this->color);
+}
+
+void Particle::renderAt(const Camera2D &c) const {
+	const float px = (this->size.x - c.target.x) * c.zoom + c.offset.x;
+	const float py = (this->size.y + c.target.y) * c.zoom - c.offset.y;
+	const float wd = this->size.width * c.zoom;
+	const float hg = this->size.height * c.zoom;
+	DrawRectangleRec((Rectangle){px, py, wd, hg}, this->color);
 }
 
 void Particle::attract(Particle &other, const double_t &G) {

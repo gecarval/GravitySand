@@ -27,21 +27,17 @@ void initEngine(Game &game) {
 	game.camera = (Camera2D){
 		(Vector2){WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f},
 		(Vector2){WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f}, 0.0f, 1.0f};
+	game.screen = LoadRenderTexture(WINDOW_WIDTH, WINDOW_HEIGHT);
 }
 
 void renderGame(Game &game) {
+	BeginTextureMode(game.screen);
+	ClearBackground({0, 0, 24, 255});
 	for (std::deque<Particle>::iterator p = game.particles.begin();
 		 p != game.particles.cend(); p++) {
-		if (CheckCollisionRecs(
-				(*p).getSize(),
-				(Rectangle){game.camera.target.x -
-								game.camera.offset.x / game.camera.zoom,
-							game.camera.target.y -
-								game.camera.offset.y / game.camera.zoom,
-							WINDOW_WIDTH / game.camera.zoom,
-							WINDOW_HEIGHT / game.camera.zoom}))
-			(*p).render();
+		(*p).renderAt(game.camera);
 	}
+	EndTextureMode();
 }
 
 void updateEngine(Game &game) {
@@ -49,10 +45,10 @@ void updateEngine(Game &game) {
 		engineInput(game);
 		game.gravity.attract(game.particles);
 		game.gravity.update(game.particles);
-		BeginDrawing();
-		ClearBackground({0, 0, 24, 255});
-		BeginMode2D(game.camera);
 		renderGame(game);
+		BeginDrawing();
+		DrawTexture(game.screen.texture, 0, 0, WHITE);
+		BeginMode2D(game.camera);
 		EndMode2D();
 		DrawFPS(10, 10);
 		renderImGui(game);

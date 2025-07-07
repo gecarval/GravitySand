@@ -28,6 +28,7 @@ class Particle {
 	~Particle();
 	void			 update(void);
 	void			 render(void) const;
+	void			 renderAt(const Camera2D &c) const;
 	void			 intersect(const Particle &other) const;
 	void			 attract(Particle &other, const double_t &G);
 	const Rectangle &getSize(void) const;

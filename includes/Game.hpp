@@ -2,6 +2,7 @@
 #define GAME_HPP
 
 // MACROS
+#include "raylib/raylib.h"
 static const int WINDOW_WIDTH = 1600;
 static const int WINDOW_HEIGHT = 900;
 
@@ -18,6 +19,7 @@ class Game {
 	std::deque<Particle> particles;
 	Gravity				 gravity;
 	Camera2D			 camera;
+	RenderTexture2D		 screen;
 	Game() {};
 	~Game() {};
 };
