@@ -56,7 +56,7 @@ void Particle::render(void) const {
 
 void Particle::renderAt(const Camera2D &c) const {
 	const float px = (this->size.x - c.target.x) * c.zoom + c.offset.x;
-	const float py = (this->size.y + c.target.y) * c.zoom - c.offset.y;
+	const float py = (c.target.y - this->size.y) * c.zoom + c.offset.y;
 	const float wd = this->size.width * c.zoom;
 	const float hg = this->size.height * c.zoom;
 	DrawRectangleRec((Rectangle){px, py, wd, hg}, this->color);
