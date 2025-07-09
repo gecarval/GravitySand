@@ -1,19 +1,13 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-// MACROS
-#include "raylib/raylib.h"
-static const int WINDOW_WIDTH = 1600;
-static const int WINDOW_HEIGHT = 900;
-
 // INCLUDES
 #include "../classes/Gravity.hpp"
 #include "./imgui/imgui.h"
 #include "imgui/rlImGui.h"
+#include "raylib/raylib.h"
 #include <iostream>
 #include <string>
-
-static const int PART_MAX_AMOUNT = 500;
 
 class Game {
   public:
@@ -22,6 +16,12 @@ class Game {
 	std::deque<Particle> particles;
 	QuadTree			 quadTree;
 	Gravity				 gravity;
+	void				 update(std::deque<Particle> &p) {
+		for (std::deque<Particle>::iterator p1 = p.begin(); p1 != p.cend();
+			 p1++) {
+			(*p1).update();
+		}
+	};
 	Game() {};
 	~Game() {};
 };

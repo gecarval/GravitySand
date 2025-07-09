@@ -2,13 +2,12 @@
 #include <cstdint>
 
 QuadTree::QuadTree()
-	: parent(nullptr), nw(nullptr), ne(nullptr), sw(nullptr), se(nullptr),
-	  tmass(0), qPos(PARENT), level(0), count(0), empty(true),
-	  divided(false) {};
+	: tmass(0), qPos(PARENT), level(0), count(0), empty(true), divided(false),
+	  parent(nullptr), nw(nullptr), ne(nullptr), sw(nullptr), se(nullptr) {};
 
 QuadTree::QuadTree(QuadTree *p, const Rectangle &q, const size_t &lvl,
 				   const uint8_t &qp)
-	: parent(p), quad(q), level(lvl), qPos(qp) {};
+	: quad(q), qPos(qp), level(lvl), parent(p) {};
 
 QuadTree::~QuadTree() {};
 

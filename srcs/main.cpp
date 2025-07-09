@@ -1,38 +1,60 @@
 #include "../includes/Game.hpp"
 #include <deque>
 
+// Window Settings
+static const char	*windowTitle = "Gravity Sand";
+static const int	 windowWidth = 1600;
+static const int	 windowheight = 900;
+static const int	 frameLimit = 60;
+static const Vector2 drawFpsPos = (Vector2){10.0f, 10.0f};
+
+// Game Camera2D Settings
+static const float	 posX = windowWidth / 2.0f;
+static const float	 posY = windowheight / 2.0f;
+static const Vector2 screenMiddle = (Vector2){posX, posY};
+static const Vector2 target = screenMiddle;
+static const Vector2 offset = screenMiddle;
+static const float	 rotation = 0.0f;
+static const float	 zoom = 1.0f;
+
+// Render Texture Settings
+static const Vector2 axisCenter = (Vector2){0.0f, 0.0f};
+static const Color	 backGroundColor = (Color){0, 0, 24, 255};
+static const Color	 screenColorTint = WHITE;
+
+// Simulation Settings
+static const int   particleMaxAmount = 500;
+static const float defaultGravityValue = 3000.0f;
+
 void initParticles(Game &game) {
-	int		randYPos;
-	int		randXPos;
+	float	randYPos;
+	float	randXPos;
 	Vector2 pos;
 
-	game.particles = std::deque<Particle>(PART_MAX_AMOUNT);
+	game.particles = std::deque<Particle>(particleMaxAmount);
 	for (std::deque<Particle>::iterator p = game.particles.begin();
 		 p != game.particles.end(); p++) {
-		randYPos = rand() % WINDOW_HEIGHT;
-		randXPos = rand() % WINDOW_WIDTH;
-		pos = (Vector2){static_cast<float>(randXPos),
-						static_cast<float>(randYPos)};
+		randYPos = rand() % windowheight;
+		randXPos = rand() % windowWidth;
+		pos = (Vector2){randXPos, randYPos};
 		(*p).setNewType(rand() % 3);
 		(*p).setPos(pos);
 	}
-	game.gravity.setGravity(3000.0);
 }
 
 void initEngine(Game &game) {
-	InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Gravity Sand");
-	//	SetTargetFPS(60);
+	InitWindow(windowWidth, windowheight, windowTitle);
+	SetTargetFPS(frameLimit);
 	rlImGuiSetup(true);
 	initParticles(game);
-	game.camera = (Camera2D){
-		(Vector2){WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f},
-		(Vector2){WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f}, 0.0f, 1.0f};
-	game.screen = LoadRenderTexture(WINDOW_WIDTH, WINDOW_HEIGHT);
+	game.gravity.setGravity(defaultGravityValue);
+	game.camera = (Camera2D){offset, target, rotation, zoom};
+	game.screen = LoadRenderTexture(windowWidth, windowheight);
 }
 
 void renderGame(Game &game) {
 	BeginTextureMode(game.screen);
-	ClearBackground({0, 0, 24, 255});
+	ClearBackground(backGroundColor);
 	for (std::deque<Particle>::iterator p = game.particles.begin();
 		 p != game.particles.cend(); p++) {
 		(*p).renderAt(game.camera);
@@ -46,13 +68,14 @@ void updateEngine(Game &game) {
 	while (!WindowShouldClose()) {
 		engineInput(game);
 		game.gravity.attract(game.particles);
-		game.gravity.update(game.particles);
+		game.update(game.particles);
 		renderGame(game);
 		BeginDrawing();
-		DrawTexture(game.screen.texture, 0, 0, WHITE);
+		DrawTexture(game.screen.texture, axisCenter.x, axisCenter.y,
+					screenColorTint);
 		BeginMode2D(game.camera);
 		EndMode2D();
-		DrawFPS(10, 10);
+		DrawFPS(drawFpsPos.x, drawFpsPos.y);
 		renderImGui(game);
 		EndDrawing();
 	}

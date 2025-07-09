@@ -54,12 +54,14 @@ void Particle::render(void) const {
 	DrawRectangleRec(this->size, this->color);
 }
 
+// Draw Relative to the camera2D target Vector2D
 void Particle::renderAt(const Camera2D &c) const {
-	const float px = (this->size.x - c.target.x) * c.zoom + c.offset.x;
-	const float py = (c.target.y - this->size.y) * c.zoom + c.offset.y;
-	const float wd = this->size.width * c.zoom;
-	const float hg = this->size.height * c.zoom;
-	DrawRectangleRec((Rectangle){px, py, wd, hg}, this->color);
+	const float		posX = (this->size.x - c.target.x) * c.zoom + c.offset.x;
+	const float		posY = (c.target.y - this->size.y) * c.zoom + c.offset.y;
+	const float		width = this->size.width * c.zoom;
+	const float		height = this->size.height * c.zoom;
+	const Rectangle rec = (Rectangle){posX, posY, width, height};
+	DrawRectangleRec(rec, this->color);
 }
 
 void Particle::attract(Particle &other, const double_t &G) {
