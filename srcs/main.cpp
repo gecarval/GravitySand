@@ -61,6 +61,7 @@ void renderGame(Game &game) {
 		game.quadTree.setMin((*p).getPos());
 		game.quadTree.setMax((*p).getPos());
 	}
+	game.quadTree.renderQuads(game.camera);
 	EndTextureMode();
 }
 
@@ -78,10 +79,14 @@ void updateEngine(Game &game) {
 		DrawFPS(drawFpsPos.x, drawFpsPos.y);
 		renderImGui(game);
 		EndDrawing();
+		// game.quadTree.clear();
+		// game.quadTree.build(game.particles);
 	}
 }
 
-void endEngine() {
+void endEngine(Game &game) {
+	// game.quadTree.clear();
+	(void)game;
 	rlImGuiShutdown();
 	CloseWindow();
 }
@@ -90,6 +95,6 @@ int main(void) {
 	Game game;
 	initEngine(game);
 	updateEngine(game);
-	endEngine();
+	endEngine(game);
 	return (0);
 }

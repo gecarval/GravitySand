@@ -2,7 +2,6 @@
 #define GRAVITY_HPP
 
 #include "../classes/QuadTree.hpp"
-#include <deque>
 
 class Gravity {
   public:

@@ -6,7 +6,9 @@
 #include "./imgui/imgui.h"
 #include "imgui/rlImGui.h"
 #include "raylib/raylib.h"
+#include <atomic>
 #include <iostream>
+#include <omp.h>
 #include <string>
 
 struct Game {

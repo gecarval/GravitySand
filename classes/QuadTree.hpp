@@ -3,6 +3,7 @@
 
 #include "../classes/Particle.hpp"
 #include <cstdint>
+#include <deque>
 
 static const size_t MAX_CAPACITY = 4;
 
@@ -42,6 +43,8 @@ class QuadTree {
 	void		   insert(Particle *p);
 	void		   setMin(const Vector2 &v);
 	void		   subDivide(void);
+	void		   build(std::deque<Particle> &p);
+	void		   renderQuads(const Camera2D &c);
 	const Vector2 &getMin(void) const;
 	void		   setMax(const Vector2 &v);
 	const Vector2 &getMax(void) const;
