@@ -5,7 +5,7 @@
 static const char	*windowTitle = "Gravity Sand";
 static const int	 windowWidth = 1600;
 static const int	 windowheight = 900;
-static const int	 frameLimit = 60;
+static const int	 frameLimit = 120;
 static const Vector2 drawFpsPos = (Vector2){10.0f, 10.0f};
 
 // Game Camera2D Settings
@@ -68,7 +68,7 @@ void updateEngine(Game &game) {
 	while (!WindowShouldClose()) {
 		engineInput(game);
 		game.gravity.attract(game.particles);
-		game.update(game.particles);
+		game.updateParticlesVectors();
 		renderGame(game);
 		BeginDrawing();
 		DrawTexture(game.screen.texture, axisCenter.x, axisCenter.y,

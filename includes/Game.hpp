@@ -9,21 +9,18 @@
 #include <iostream>
 #include <string>
 
-class Game {
-  public:
+struct Game {
 	Camera2D			 camera;
 	RenderTexture2D		 screen;
 	std::deque<Particle> particles;
 	QuadTree			 quadTree;
 	Gravity				 gravity;
-	void				 update(std::deque<Particle> &p) {
-		for (std::deque<Particle>::iterator p1 = p.begin(); p1 != p.cend();
-			 p1++) {
+	void				 updateParticlesVectors(void) {
+		for (std::deque<Particle>::iterator p1 = this->particles.begin();
+			 p1 != this->particles.cend(); p1++) {
 			(*p1).update();
 		}
 	};
-	Game() {};
-	~Game() {};
 };
 
 void renderImGui(Game &game);
