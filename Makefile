@@ -1,6 +1,6 @@
 #
 # Gerson Carvalho
-# GravitySand v0.1b
+# GravitySand v0.11b
 #
 
 CXX = g++
@@ -42,8 +42,11 @@ RM = rm -f
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(INCLUDES)
+$(NAME): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(STDRULE) $(OBJS) -o $(NAME) $(INCS)
+
+%.o: %.cpp $(INCLUDES)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
 	$(RM) $(OBJS)
