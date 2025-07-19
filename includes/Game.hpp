@@ -12,17 +12,17 @@
 #include <string>
 
 struct Game {
-	Camera2D			 camera;
-	RenderTexture2D		 screen;
-	std::deque<Particle> particles;
-	QuadTree			 quadTree;
-	Gravity				 gravity;
-	void				 updateParticlesVectors(void) {
-		for (std::deque<Particle>::iterator p1 = this->particles.begin();
-			 p1 != this->particles.cend(); p1++) {
-			(*p1).update();
-		}
-	};
+  Camera2D camera;
+  RenderTexture2D screen;
+  std::deque<Particle> particles;
+  QuadTree quadTree;
+  Gravity gravity;
+  void updateParticlesVectors(void) {
+    for (std::deque<Particle>::iterator p1 = this->particles.begin();
+         p1 != this->particles.cend(); p1++) {
+      (*p1).update();
+    }
+  };
 };
 
 void renderImGui(Game &game);
