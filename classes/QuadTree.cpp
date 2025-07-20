@@ -1,31 +1,17 @@
 #include "./QuadTree.hpp"
-#include <cstdlib>
 
 QuadTree::QuadTree()
-    : quad(Rectangle()), tmass(0), min(Vector2()), max(Vector2()), qPos(PARENT),
-      level(0), count(0), empty(true), divided(false), parent(nullptr),
-      nw(nullptr), ne(nullptr), sw(nullptr), se(nullptr) {};
+    : quad(Rectangle()), totalMass(0), massCenter(Vector2()), min(Vector2()),
+      max(Vector2()), sector(PARENT), level(0), count(0), divided(false),
+      parent(nullptr), nw(nullptr), ne(nullptr), sw(nullptr), se(nullptr) {}
 
-QuadTree::QuadTree(QuadTree *p, const Rectangle &q, const size_t &lvl,
-                   const uint8_t &qp)
-    : quad(q), tmass(0), qPos(qp), level(lvl), count(0), empty(true),
-      divided(false), parent(p), nw(nullptr), ne(nullptr), sw(nullptr),
-      se(nullptr) {};
+QuadTree::QuadTree(QuadTree *parent, const Rectangle &quad, const size_t &lvl,
+                   const uint8_t &sector)
+    : quad(quad), totalMass(0), massCenter(Vector2()), sector(sector),
+      level(lvl), count(0), divided(false), parent(parent), nw(nullptr),
+      ne(nullptr), sw(nullptr), se(nullptr) {}
 
-static void clearChildren(QuadTree *t) {
-  if (t == nullptr)
-    return;
-  if (t->isDivided()) {
-    clearChildren(t->getChildren(NORTH_WEST));
-    clearChildren(t->getChildren(NORTH_EAST));
-    clearChildren(t->getChildren(SOUTH_WEST));
-    clearChildren(t->getChildren(SOUTH_EAST));
-  }
-  if (t->getLevel() != 0)
-    delete t;
-};
-
-QuadTree::~QuadTree() {};
+QuadTree::~QuadTree() {}
 
 void QuadTree::build(std::deque<Particle> &p) {
   const Vector2 pos = (Vector2){this->min.x, this->min.y};
@@ -35,7 +21,8 @@ void QuadTree::build(std::deque<Particle> &p) {
   for (std::deque<Particle>::iterator p1 = p.begin(); p1 != p.cend(); p1++) {
     this->insert(&(*p1));
   }
-};
+  this->calcCenterOfMass();
+}
 
 void QuadTree::subDivide(void) {
   Rectangle r;
@@ -43,7 +30,7 @@ void QuadTree::subDivide(void) {
   const float cy = this->quad.y;
   const float wd = this->quad.width / 2.0f;
   const float hg = this->quad.height / 2.0f;
-  this->divided = true;
+  this->isDivided(true);
   r = (Rectangle){cx, cy, wd, hg};
   this->nw = new QuadTree(this, r, this->level + 1, NORTH_WEST);
   r = (Rectangle){cx + wd, cy, wd, hg};
@@ -64,8 +51,8 @@ void QuadTree::subDivide(void) {
 void QuadTree::insert(Particle *p) {
   if (!CheckCollisionPointRec(p->getPos(), this->quad))
     return;
-  this->mid += p->getPos();
-  this->tmass += p->getMass();
+  this->massCenter += p->getPos();
+  this->totalMass += p->getMass();
   if (this->isDivided()) {
     this->count++;
     this->nw->insert(p);
@@ -75,7 +62,6 @@ void QuadTree::insert(Particle *p) {
     return;
   }
   if (this->count < MAX_CAPACITY) {
-    this->empty = false;
     this->p[this->count++] = p;
     return;
   }
@@ -84,85 +70,118 @@ void QuadTree::insert(Particle *p) {
   this->ne->insert(p);
   this->sw->insert(p);
   this->se->insert(p);
-};
+}
 
 void QuadTree::clear(void) {
-  this->tmass = 0.0;
-  this->qPos = PARENT;
+  if (this->isDivided()) {
+    this->nw->clear();
+    this->ne->clear();
+    this->sw->clear();
+    this->se->clear();
+  }
+  if (this->getSector() != PARENT) {
+    delete this;
+    return;
+  }
+  this->totalMass = 0.0;
+  this->sector = PARENT;
   this->level = 0;
   this->count = 0;
-  this->empty = true;
   this->divided = false;
   this->parent = nullptr;
-  clearChildren(this);
   this->nw = nullptr;
   this->ne = nullptr;
   this->sw = nullptr;
   this->se = nullptr;
-};
+}
 
-void QuadTree::renderQuads(const Camera2D &c) {
+void QuadTree::renderQuads(const Camera2D &camera) {
   if (this->isDivided()) {
-    this->nw->renderQuads(c);
-    this->ne->renderQuads(c);
-    this->sw->renderQuads(c);
-    this->se->renderQuads(c);
+    this->nw->renderQuads(camera);
+    this->ne->renderQuads(camera);
+    this->sw->renderQuads(camera);
+    this->se->renderQuads(camera);
+    return;
   }
-  // const float posX = (this->quad.x - c.target.x) * c.zoom + c.offset.x;
-  // const float posY = (-this->quad.y + c.target.y) * c.zoom + c.offset.y;
-  // const float width = this->quad.width * c.zoom;
-  // const float height = this->quad.height * c.zoom;
-  // const Rectangle rec = (Rectangle){posX, posY, width, height};
   const float lineThickness = 1.0f;
-  const Rectangle rec = this->quad;
-  DrawRectangleLinesEx(rec, lineThickness, RED);
-};
+  DrawRectangleLinesEx(this->quad, lineThickness, RED);
+  DrawCircleV(this->massCenter, 2, GREEN);
+}
 
-void QuadTree::setLevel(const size_t &lvl) { this->level = lvl; };
-
-const size_t &QuadTree::getLevel(void) const { return (this->level); };
+void QuadTree::calcCenterOfMass(void) {
+  if (this->isDivided()) {
+    this->nw->calcCenterOfMass();
+    this->ne->calcCenterOfMass();
+    this->sw->calcCenterOfMass();
+    this->se->calcCenterOfMass();
+  }
+  if (this->count != 0)
+    this->massCenter /= this->count;
+}
 
 void QuadTree::setMax(const Vector2 &v) {
   if (v.x > this->max.x)
     this->max.x = v.x;
   if (v.y > this->max.y)
     this->max.y = v.y;
-};
-
-const Vector2 &QuadTree::getMax(void) const { return (this->max); };
+}
 
 void QuadTree::setMin(const Vector2 &v) {
   if (v.x < this->min.x)
     this->min.x = v.x;
   if (v.y < this->min.y)
     this->min.y = v.y;
-};
+}
 
-const Vector2 &QuadTree::getMin(void) const { return (this->min); };
+void QuadTree::setMassCenter(const Vector2 &v) { this->massCenter = v; }
 
-void QuadTree::isDivided(const bool &state) { this->divided = state; };
+void QuadTree::setTotalMass(const double_t &m) { this->totalMass = m; }
 
-const bool &QuadTree::isDivided(void) const { return (this->divided); };
+void QuadTree::setSector(const u_int8_t &sector) { this->sector = sector; }
 
-void QuadTree::setChildren(QuadTree *node, const uint8_t &n) {
-  if (n & NORTH_WEST)
+void QuadTree::setLevel(const size_t &lvl) { this->level = lvl; }
+
+const Vector2 &QuadTree::getMax(void) const { return (this->max); }
+
+const Vector2 &QuadTree::getMin(void) const { return (this->min); }
+
+const Vector2 &QuadTree::getMassCenter(void) const {
+  return (this->massCenter);
+}
+
+const double_t &QuadTree::getTotalMass(void) const { return (this->totalMass); }
+
+const u_int8_t &QuadTree::getSector(void) const { return (this->sector); }
+
+const size_t &QuadTree::getLevel(void) const { return (this->level); }
+
+void QuadTree::isDivided(const bool &state) { this->divided = state; }
+
+const bool &QuadTree::isDivided(void) const { return (this->divided); }
+
+bool QuadTree::isEmpty(void) const { return (this->count == 0 ? true : false); }
+
+Particle *const *QuadTree::getParticles(void) const { return (this->p); }
+
+void QuadTree::setChildren(QuadTree *node, const uint8_t &sector) {
+  if (sector & NORTH_WEST)
     this->nw = node;
-  if (n & NORTH_EAST)
+  if (sector & NORTH_EAST)
     this->ne = node;
-  if (n & SOUTH_WEST)
+  if (sector & SOUTH_WEST)
     this->sw = node;
-  if (n & SOUTH_EAST)
+  if (sector & SOUTH_EAST)
     this->se = node;
-};
+}
 
-QuadTree *QuadTree::getChildren(const uint8_t &n) const {
-  if (n & NORTH_WEST)
+QuadTree *QuadTree::getChildren(const uint8_t &sector) const {
+  if (sector & NORTH_WEST)
     return (this->nw);
-  if (n & NORTH_EAST)
+  if (sector & NORTH_EAST)
     return (this->ne);
-  if (n & SOUTH_WEST)
+  if (sector & SOUTH_WEST)
     return (this->sw);
-  if (n & SOUTH_EAST)
+  if (sector & SOUTH_EAST)
     return (this->se);
   return (nullptr);
-};
+}
