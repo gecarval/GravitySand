@@ -3,13 +3,19 @@
 QuadTree::QuadTree()
     : quad(Rectangle()), totalMass(0), massCenter(Vector2()), min(Vector2()),
       max(Vector2()), sector(PARENT), level(0), count(0), divided(false),
-      parent(nullptr), nw(nullptr), ne(nullptr), sw(nullptr), se(nullptr) {}
+      parent(nullptr), nw(nullptr), ne(nullptr), sw(nullptr), se(nullptr) {
+  for (size_t i = 0; i < MAX_CAPACITY; i++)
+    this->p[i] = nullptr;
+}
 
 QuadTree::QuadTree(QuadTree *parent, const Rectangle &quad, const size_t &lvl,
                    const uint8_t &sector)
     : quad(quad), totalMass(0), massCenter(Vector2()), sector(sector),
       level(lvl), count(0), divided(false), parent(parent), nw(nullptr),
-      ne(nullptr), sw(nullptr), se(nullptr) {}
+      ne(nullptr), sw(nullptr), se(nullptr) {
+  for (size_t i = 0; i < MAX_CAPACITY; i++)
+    this->p[i] = nullptr;
+}
 
 QuadTree::~QuadTree() {}
 
@@ -162,6 +168,10 @@ const bool &QuadTree::isDivided(void) const { return (this->divided); }
 bool QuadTree::isEmpty(void) const { return (this->count == 0 ? true : false); }
 
 Particle *const *QuadTree::getParticles(void) const { return (this->p); }
+
+void QuadTree::setParent(QuadTree *node) { this->parent = node; }
+
+QuadTree *QuadTree::getParent(void) const { return (this->parent); }
 
 void QuadTree::setChildren(QuadTree *node, const uint8_t &sector) {
   if (sector & NORTH_WEST)

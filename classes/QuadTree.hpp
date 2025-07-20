@@ -62,6 +62,8 @@ public:
   const u_int8_t &getSector(void) const;
   void setChildren(QuadTree *node, const uint8_t &sector);
   QuadTree *getChildren(const uint8_t &sector) const;
+  void setParent(QuadTree *node);
+  QuadTree *getParent(void) const;
   Particle *const *getParticles(void) const;
 };
 
