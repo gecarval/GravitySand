@@ -12,6 +12,7 @@
 #include <string>
 
 struct Game {
+  bool drawQuads;
   Camera2D camera;
   RenderTexture2D screen;
   std::deque<Particle> particles;

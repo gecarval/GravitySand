@@ -49,6 +49,7 @@ void initEngine(Game &game) {
   SetTargetFPS(frameLimit);
   rlImGuiSetup(true);
   initParticles(game);
+  game.drawQuads = false;
   game.gravity.setGravity(defaultGravityValue);
   game.camera = (Camera2D){offset, target, rotation, zoom};
   game.screen = LoadRenderTexture(windowWidth, windowheight);
@@ -67,7 +68,8 @@ void renderGame(Game &game) {
   BeginDrawing();
   DrawTexture(game.screen.texture, axisCenter.x, axisCenter.y, screenColorTint);
   BeginMode2D(game.camera);
-  game.quadTree.renderQuads(game.camera);
+  if (game.drawQuads)
+    game.quadTree.renderQuads(game.camera);
   EndMode2D();
   DrawFPS(drawFpsPos.x, drawFpsPos.y);
 }

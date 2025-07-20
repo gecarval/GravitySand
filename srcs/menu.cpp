@@ -9,6 +9,10 @@ static void gravitySettings(Game &game) {
   if (ImGui::IsItemHovered())
     ImGui::SetTooltip("Turns gravity ON/OFF on the engine.");
   ImGui::Separator();
+  ImGui::Checkbox("DrawQuads", &game.drawQuads);
+  if (ImGui::IsItemHovered())
+    ImGui::SetTooltip("Draws Spatial partition quads.");
+  ImGui::Separator();
   ImGui::TextColored({0, 128, 128, 255}, "Gravity Value");
   ImGui::SliderFloat("G", &currGravity, -MAX_G, MAX_G);
   ImGui::Separator();
