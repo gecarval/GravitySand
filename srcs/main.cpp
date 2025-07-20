@@ -23,8 +23,8 @@ static const Color backGroundColor = (Color){0, 0, 24, 255};
 static const Color screenColorTint = WHITE;
 
 // Simulation Settings
-static const int particleMaxAmount = 500;
-static const float defaultGravityValue = 3000.0f;
+static const int particleMaxAmount = 5000;
+static const float defaultGravityValue = 30.0f;
 
 void initParticles(Game &game) {
   float randYPos;
@@ -78,7 +78,7 @@ void updateEngine(Game &game) {
   while (!WindowShouldClose()) {
     engineInput(game);
     game.quadTree.build(game.particles);
-    game.gravity.attract(game.particles);
+    game.gravity.attract(game.quadTree);
     game.updateParticlesVectors();
     renderGame(game);
     renderImGui(game);

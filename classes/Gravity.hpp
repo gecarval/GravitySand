@@ -10,6 +10,7 @@ public:
   ~Gravity();
   void render(void);
   void attract(std::deque<Particle> &other);
+  void attract(const QuadTree &node);
   const double_t &getGravity(void) const;
   void setGravity(const double_t &other);
 
