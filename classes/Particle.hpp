@@ -31,6 +31,7 @@ public:
   void renderAt(const Camera2D &c) const;
   void intersect(const Particle &other) const;
   void attract(Particle &other, const double_t &G);
+  void attract(const Vector2 &v, const double_t &m, const double_t &G);
   const Rectangle &getSize(void) const;
   void setSize(const Rectangle &data);
   const int &getType(void) const;

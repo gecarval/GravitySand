@@ -76,6 +76,18 @@ void Particle::attract(Particle &other, const double_t &G) {
   }
 }
 
+void Particle::attract(const Vector2 &v, const double_t &m, const double_t &G) {
+  Vector2 direction = v - this->pos;
+  double_t distance = Vector2Length(direction);
+  if (distance > 1) {
+    direction = Vector2Normalize(direction);
+    double_t force = (this->mass * m) / (distance * distance);
+    force *= G;
+    Vector2 acceleration = direction * force / this->mass;
+    this->acel = this->acel + acceleration;
+  }
+}
+
 void Particle::intersect(const Particle &other) const {
   GetCollisionRec(this->size, other.size);
 }
