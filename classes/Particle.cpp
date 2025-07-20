@@ -62,23 +62,22 @@ void Particle::renderAt(const Camera2D &c) const {
 
 void Particle::attract(Particle &other, const double_t &G) {
   if (this != &other) {
-    Vector2 direction = other.getPos() - this->getPos();
+    Vector2 direction = other.pos - this->pos;
     double_t distance = Vector2Length(direction);
     if (distance > 1) {
       direction = Vector2Normalize(direction);
-      double_t force =
-          (this->getMass() * other.getMass()) / (distance * distance);
+      double_t force = (this->mass * other.mass) / (distance * distance);
       force *= G;
-      Vector2 acceleration = direction * force / this->getMass();
-      this->setAcel(this->getAcel() + acceleration);
-      acceleration = direction * force / other.getMass();
-      other.setAcel(other.getAcel() - acceleration);
+      Vector2 acceleration = direction * force / this->mass;
+      this->acel = this->acel + acceleration;
+      acceleration = direction * force / other.mass;
+      other.acel = other.acel - acceleration;
     }
   }
 }
 
 void Particle::intersect(const Particle &other) const {
-  GetCollisionRec(this->size, other.getSize());
+  GetCollisionRec(this->size, other.size);
 }
 
 void Particle::setNewType(const int &data) {
